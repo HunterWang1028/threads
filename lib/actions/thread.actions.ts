@@ -75,3 +75,77 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
     throw new Error(`Error fetching threads: ${error.message}`);
   }
 }
+
+export async function fetchThreadById(id: string) {
+  try {
+    connectToDB();
+
+    // TODO populate community
+    const thread = await Thread.findById(id)
+      .populate({
+        path: "author", // Populate the author field with _id and username
+        model: "User",
+        select: "_id id name image",
+      })
+      .populate({
+        path: "children", // Populate the children field
+        populate: [
+          {
+            path: "author", // Populate the author field within children
+            model: "User",
+            select: "_id id name parentId image",
+          },
+          {
+            path: "children", // Populate the children field within children
+            model: "Thread",
+            populate: {
+              path: "author", // Populate the author field within nested children
+              model: "User",
+              select: "_id id name parentId image",
+            },
+          },
+        ],
+      })
+      .exec();
+
+    return thread;
+  } catch (error: any) {
+    throw new Error(`Error fetching thread: ${error.message}`);
+  }
+}
+
+export async function addCommentToThread(
+  threadId: string,
+  commentText: string,
+  userId: string,
+  path: string
+) {
+  try {
+    connectToDB();
+    // find the original thread by its ID
+    const originalThread = await Thread.findById(threadId);
+
+    if (!originalThread) throw new Error("Thread not found");
+
+    // create a new thread with the comment text
+    const commentThread = new Thread({
+      text: commentText,
+      author: userId,
+      parentId: threadId,
+    });
+
+    // save the new thread
+    const savedCommentThread = await commentThread.save();
+
+    // update the original thread to include the new thread
+
+    originalThread.children.push(savedCommentThread._id);
+
+    // save the original thread
+    await originalThread.save();
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to thread: ${error.message}`);
+  }
+}

@@ -7,5 +7,4 @@ export const ThreadValidation = z.object({
 
 export const CommentValidation = z.object({
   thread: z.string().min(3, { message: "come on, type some more" }),
-  accountId: z.string(),
 });
