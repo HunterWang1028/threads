@@ -4,11 +4,11 @@ import React from "react";
 import { sidebarLinks } from "@/constants";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { SignedIn, SignOutButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import { SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
-  const router = useRouter();
+  const { userId } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -18,6 +18,8 @@ const LeftSidebar = () => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === link.route;
+
+          if (link.route === "/profile") link.route = `${link.route}/${userId}`;
           return (
             <Link
               href={link.route}
