@@ -165,9 +165,8 @@ export async function getActivity(userId: string) {
     });
 
     return replies;
-  } catch (error) {
-    console.error("Error fetching replies: ", error);
-    throw error;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch activity: ${error.message}`);
   }
 }
 
