@@ -2,7 +2,10 @@ import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import LikeThread from "../forms/LikeThread";
 import DeleteThread from "../forms/DeleteThread";
+import { currentUser } from "@clerk/nextjs/server";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 type ThreadCardProps = {
   id: string;
@@ -28,7 +31,7 @@ type ThreadCardProps = {
   isComment?: boolean;
 };
 
-const ThreadCard = ({
+const ThreadCard = async ({
   id,
   currentUserId,
   parentId,
@@ -39,6 +42,7 @@ const ThreadCard = ({
   comments,
   isComment,
 }: ThreadCardProps) => {
+  const user = await fetchUser(currentUserId);
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
@@ -71,36 +75,40 @@ const ThreadCard = ({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
-                <Image
+                <LikeThread
+                  threadId={JSON.stringify(id)}
+                  currentUserId={user._id}
+                />
+                {/* <Image
                   src="/assets/heart-gray.svg"
                   alt="heart"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
-                />
+                /> */}
                 <Link href={`/thread/${id}`}>
                   <Image
                     src="/assets/reply.svg"
-                    alt="heart"
+                    alt="reply"
                     width={24}
                     height={24}
                     className="cursor-pointer object-contain"
                   />
                 </Link>
-                <Image
+                {/* <Image
                   src="/assets/repost.svg"
-                  alt="heart"
+                  alt="repost"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
                 />
                 <Image
                   src="/assets/share.svg"
-                  alt="heart"
+                  alt="share"
                   width={24}
                   height={24}
                   className="cursor-pointer object-contain"
-                />
+                /> */}
               </div>
 
               {isComment && comments.length > 0 && (

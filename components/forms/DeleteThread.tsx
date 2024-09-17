@@ -5,13 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { deleteThread } from "@/lib/actions/thread.actions";
 
-interface Props {
+type DeleteThreadProps = {
   threadId: string;
   currentUserId: string;
   authorId: string;
   parentId: string | null;
   isComment?: boolean;
-}
+};
 
 function DeleteThread({
   threadId,
@@ -19,7 +19,7 @@ function DeleteThread({
   authorId,
   parentId,
   isComment,
-}: Props) {
+}: DeleteThreadProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ function DeleteThread({
   return (
     <Image
       src="/assets/delete.svg"
-      alt="delte"
+      alt="delete"
       width={18}
       height={18}
       className="cursor-pointer object-contain"
