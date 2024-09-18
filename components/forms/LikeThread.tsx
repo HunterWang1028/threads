@@ -3,11 +3,7 @@
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
-import {
-  deleteThread,
-  fetchThreadById,
-  likeThread,
-} from "@/lib/actions/thread.actions";
+import { likeThread } from "@/lib/actions/thread.actions";
 import { useState } from "react";
 
 type LikeThreadProps = {

@@ -11,12 +11,14 @@ type createThreadProps = {
   author: string;
   communityId: string | null;
   path: string;
+  image: string;
 };
 export async function createThread({
   text,
   author,
   communityId,
   path,
+  image,
 }: createThreadProps) {
   try {
     connectToDB();
@@ -30,6 +32,7 @@ export async function createThread({
       text,
       author,
       community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
+      image,
     });
 
     // update user model

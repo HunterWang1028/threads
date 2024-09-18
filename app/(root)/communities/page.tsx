@@ -1,8 +1,7 @@
 import CommunityCard from "@/components/cards/CommunityCard";
-import UserCard from "@/components/cards/UserCard";
 import Searchbar from "@/components/shared/Searchbar";
 import { fetchCommunities } from "@/lib/actions/community.actions";
-import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 

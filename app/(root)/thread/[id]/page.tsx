@@ -25,6 +25,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           currentUserId={user?.id || ""}
           parentId={thread.parentId}
           content={thread.text}
+          image={thread.image}
           author={thread.author}
           community={thread.community}
           createdAt={thread.createdAt}
@@ -48,6 +49,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             currentUserId={user.id}
             parentId={childItem.parentId}
             content={childItem.text}
+            image={thread.image}
             author={childItem.author}
             community={childItem.community}
             createdAt={childItem.createdAt}

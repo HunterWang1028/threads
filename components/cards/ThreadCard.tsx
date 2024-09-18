@@ -6,12 +6,14 @@ import LikeThread from "../forms/LikeThread";
 import DeleteThread from "../forms/DeleteThread";
 import { currentUser } from "@clerk/nextjs/server";
 import { fetchUser } from "@/lib/actions/user.actions";
+import { fetchThreadById } from "@/lib/actions/thread.actions";
 
 type ThreadCardProps = {
   id: string;
   currentUserId: string;
   parentId: string | null;
   content: string;
+  image: string;
   author: {
     name: string;
     image: string;
@@ -36,6 +38,7 @@ const ThreadCard = async ({
   currentUserId,
   parentId,
   content,
+  image,
   author,
   community,
   createdAt,
@@ -43,6 +46,7 @@ const ThreadCard = async ({
   isComment,
 }: ThreadCardProps) => {
   const user = await fetchUser(currentUserId);
+
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
@@ -71,7 +75,19 @@ const ThreadCard = async ({
               </h4>
             </Link>
 
-            <p className="mt-2 text-small-regular text-light-2">{content}</p>
+            <p className="mt-2 mb-3 text-small-regular text-light-2">
+              {content}
+            </p>
+            {image && (
+              <Image
+                src={image}
+                alt="thread image"
+                width={300}
+                height={300}
+                priority
+                className=" object-contain rounded-md"
+              />
+            )}
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className="flex gap-3.5">
